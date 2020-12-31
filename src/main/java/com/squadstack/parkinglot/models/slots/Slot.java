@@ -1,5 +1,7 @@
 package com.squadstack.parkinglot.models.slots;
 
+import com.squadstack.parkinglot.models.commands.CommandVisitor;
+
 import java.util.Objects;
 
 public abstract class Slot {
@@ -8,6 +10,8 @@ public abstract class Slot {
     protected Slot(int slotNumber) {
         this.slotNumber = slotNumber;
     }
+
+    public abstract <T> T accept(SlotVisitor<T> visitor);
 
     public int getSlotNumber() {
         return slotNumber;

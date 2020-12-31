@@ -13,6 +13,11 @@ public class AcquiredSlot extends Slot {
     }
 
     @Override
+    public <T> T accept(SlotVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

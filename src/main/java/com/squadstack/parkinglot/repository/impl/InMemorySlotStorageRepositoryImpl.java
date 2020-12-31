@@ -6,6 +6,7 @@ import com.squadstack.parkinglot.models.ParkableEntity;
 import com.squadstack.parkinglot.models.slots.AcquiredSlot;
 import com.squadstack.parkinglot.models.slots.AvailableSlot;
 import com.squadstack.parkinglot.models.slots.Slot;
+import com.squadstack.parkinglot.models.slots.SlotVisitor;
 import com.squadstack.parkinglot.repository.SlotStorageRepository;
 
 import java.util.*;
@@ -20,15 +21,17 @@ public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository 
     private final Map<String, AcquiredSlot> carPlateToSlotMapping;
 
     public InMemorySlotStorageRepositoryImpl(int n) {
+
+        // initialize with empty collections
         for (int i = 0; i < acquiredSlotsWithAge.length; ++i) {
             acquiredSlotsWithAge[i] = new ArrayList<>();
         }
         carPlateToSlotMapping = new HashMap<>();
-
         PriorityQueue<AvailableSlot> priorityQueue =
                 new PriorityQueue<>((o1 ,o2) -> Integer.compare(o1.getSlotNumber(),o2.getSlotNumber()));
-
         Slot[] allSlots = new Slot[n+1];
+
+        // populate with all slot as available
         for (int i = 1; i <= n; ++i) {
             AvailableSlot availableSlot = new AvailableSlot(i);
             allSlots[i] = availableSlot;
@@ -77,14 +80,24 @@ public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository 
     @Override
     public AcquiredSlot leaveSlot(int slotNumber) {
         Slot curSlot = allSlots[slotNumber];
-        if (curSlot instanceof AcquiredSlot) {
-            AvailableSlot availableSlot = new AvailableSlot(curSlot.getSlotNumber());
-            acquiredSlotsWithAge[((AcquiredSlot) curSlot).getParkableEntity().getAge()].remove(curSlot);
-            carPlateToSlotMapping.remove(((AcquiredSlot) curSlot).getParkableEntity().getCarPlateNumber());
-            allSlots[curSlot.getSlotNumber()] = availableSlot;
-            availableSlots.add(availableSlot);
-            return (AcquiredSlot) curSlot;
-        }
-        throw ParkingLotException.from(ErrorCode.ATTEMPT_TO_LEAVE_UNACQUIRED_SLOT, "cannot leave unacquired slot");
+        Slot leftSlot = curSlot.accept(new SlotVisitor<Slot>() {
+            @Override
+            public Slot visit(AcquiredSlot slot) {
+                AvailableSlot availableSlot = new AvailableSlot(curSlot.getSlotNumber());
+                acquiredSlotsWithAge[((AcquiredSlot) curSlot).getParkableEntity().getAge()].remove(curSlot);
+                carPlateToSlotMapping.remove(((AcquiredSlot) curSlot).getParkableEntity().getCarPlateNumber());
+                allSlots[curSlot.getSlotNumber()] = availableSlot;
+                availableSlots.add(availableSlot);
+                return curSlot;
+            }
+
+            @Override
+            public Slot visit(AvailableSlot slot) {
+                throw ParkingLotException.from(ErrorCode.ATTEMPT_TO_LEAVE_UNACQUIRED_SLOT,
+                        "cannot leave unacquired slot");
+            }
+        });
+
+        return (AcquiredSlot) leftSlot;
     }
 }
