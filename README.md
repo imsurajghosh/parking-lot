@@ -1,6 +1,6 @@
 # parking-lot
 
-required java version java 1.8 and maven installed
+required java version java 1.8 and maven installed.
 In the pom.xml directory execute
 
 mvn clean package
