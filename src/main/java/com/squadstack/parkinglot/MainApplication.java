@@ -17,7 +17,11 @@ public class MainApplication {
     Scanner scanner = scannerFromInput(args);
     ParkingLotService parkingLotService = new ParkingLotServiceImpl();
     while (scanner.hasNextLine()) {
-      System.out.println(parkingLotService.execute(scanner.nextLine()));
+      try {
+        System.out.println(parkingLotService.execute(scanner.nextLine()));
+      } catch (ParkingLotException e) {
+        System.out.println(e.getMessage());
+      }
     }
   }
 

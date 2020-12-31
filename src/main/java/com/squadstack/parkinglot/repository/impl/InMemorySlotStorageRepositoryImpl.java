@@ -8,12 +8,13 @@ import com.squadstack.parkinglot.models.slots.AvailableSlot;
 import com.squadstack.parkinglot.models.slots.Slot;
 import com.squadstack.parkinglot.models.slots.SlotVisitor;
 import com.squadstack.parkinglot.repository.SlotStorageRepository;
+import com.squadstack.parkinglot.utils.ValidationUtils;
 
 import java.util.*;
 
-public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository {
+import static com.squadstack.parkinglot.constants.Constants.AGE_LIMIT;
 
-    private static int AGE_LIMIT = 1005;
+public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository {
 
     private final PriorityQueue<AvailableSlot> availableSlots;
     private final List<AcquiredSlot>[] acquiredSlotsWithAge = new ArrayList[AGE_LIMIT];
@@ -51,9 +52,7 @@ public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository 
 
     @Override
     public List<AcquiredSlot> getAcquiredSlot(int age) {
-        if (age < 1 || age >= AGE_LIMIT) {
-            throw ParkingLotException.from(ErrorCode.INVALID_AGE, "Age invalid");
-        }
+        ValidationUtils.ageCheck(age);
         return acquiredSlotsWithAge[age];
     }
 
@@ -69,6 +68,7 @@ public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository 
 
     @Override
     public AcquiredSlot acquireSlot(ParkableEntity parkableEntity) {
+        ValidationUtils.ageCheck(parkableEntity.getAge());
         AvailableSlot nextAvailableSlot = getNextAvailableSlot();
         AcquiredSlot acquiredSlot = new AcquiredSlot(parkableEntity, nextAvailableSlot);
         acquiredSlotsWithAge[parkableEntity.getAge()].add(acquiredSlot);
@@ -94,7 +94,7 @@ public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository 
             @Override
             public Slot visit(AvailableSlot slot) {
                 throw ParkingLotException.from(ErrorCode.ATTEMPT_TO_LEAVE_UNACQUIRED_SLOT,
-                        "cannot leave unacquired slot");
+                        "Cannot leave unacquired slot");
             }
         });
 

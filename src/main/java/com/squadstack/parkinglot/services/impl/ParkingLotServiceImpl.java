@@ -1,6 +1,6 @@
 package com.squadstack.parkinglot.services.impl;
 
-import com.squadstack.parkinglot.constants.StringConstants;
+import com.squadstack.parkinglot.constants.Constants;
 import com.squadstack.parkinglot.models.ParkableEntity;
 import com.squadstack.parkinglot.models.commands.CommandFactory;
 import com.squadstack.parkinglot.models.commands.CommandVisitor;
@@ -25,13 +25,13 @@ public class ParkingLotServiceImpl implements CommandVisitor<String>, ParkingLot
     @Override
     public String visit(CreateParkingLotCommand command) {
         slotStorageRepository = new InMemorySlotStorageRepositoryImpl(command.getSize());
-        return String.format(StringConstants.CREATED, command.getSize());
+        return String.format(Constants.CREATED, command.getSize());
     }
 
     @Override
     public String visit(ParkCommand command) {
         AcquiredSlot acquiredSlot = slotStorageRepository.acquireSlot(command.getParkableEntity());
-        return String.format(StringConstants.PARKED, acquiredSlot.getParkableEntity().getCarPlateNumber(),
+        return String.format(Constants.PARKED, acquiredSlot.getParkableEntity().getCarPlateNumber(),
                 acquiredSlot.getSlotNumber());
     }
 
@@ -53,7 +53,7 @@ public class ParkingLotServiceImpl implements CommandVisitor<String>, ParkingLot
     @Override
     public String visit(LeaveParkingLotCommand command) {
         AcquiredSlot acquiredSlot = slotStorageRepository.leaveSlot(command.getSlotNumber());
-        return String.format(StringConstants.LEFT, acquiredSlot.getSlotNumber(),
+        return String.format(Constants.LEFT, acquiredSlot.getSlotNumber(),
                 acquiredSlot.getParkableEntity().getCarPlateNumber(),
                 acquiredSlot.getParkableEntity().getAge());
     }
