@@ -20,6 +20,7 @@ public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository 
     private final List<AcquiredSlot>[] acquiredSlotsWithAge = new ArrayList[AGE_LIMIT];
     private Slot[] allSlots;
     private final Map<String, AcquiredSlot> carPlateToSlotMapping;
+    private final int slotSize;
 
     public InMemorySlotStorageRepositoryImpl(int n) {
 
@@ -32,6 +33,7 @@ public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository 
                 new PriorityQueue<>((o1 ,o2) -> Integer.compare(o1.getSlotNumber(),o2.getSlotNumber()));
         Slot[] allSlots = new Slot[n+1];
 
+        slotSize = n;
         // populate with all slot as available
         for (int i = 1; i <= n; ++i) {
             AvailableSlot availableSlot = new AvailableSlot(i);
@@ -79,6 +81,9 @@ public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository 
 
     @Override
     public AcquiredSlot leaveSlot(int slotNumber) {
+        if (slotNumber < 1 || slotNumber > slotSize ) {
+            throw ParkingLotException.from(ErrorCode.INVALID_SLOT_NUMBER, "slot number not within range");
+        }
         Slot curSlot = allSlots[slotNumber];
         Slot leftSlot = curSlot.accept(new SlotVisitor<Slot>() {
             @Override
