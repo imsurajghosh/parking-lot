@@ -5,4 +5,4 @@ and maven [(download)](https://maven.apache.org/install.html) installed.
 In the pom.xml directory execute
 
 mvn clean package;
-java -jar target/parking-lot-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar target/parking-lot-1.0-SNAPSHOT-jar-with-dependencies.jar (OptionalArgs defaults to input.txt) -f <input-file-path> 
