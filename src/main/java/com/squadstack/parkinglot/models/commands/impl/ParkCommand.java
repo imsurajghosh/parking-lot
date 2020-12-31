@@ -6,7 +6,7 @@ import com.squadstack.parkinglot.models.commands.CommandVisitor;
 
 import java.util.Arrays;
 
-public class ParkCommand implements Command {
+public class ParkCommand extends Command {
 
     private final ParkableEntity parkableEntity;
 

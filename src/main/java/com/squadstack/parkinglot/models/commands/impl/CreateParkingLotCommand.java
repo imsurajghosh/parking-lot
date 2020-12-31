@@ -3,7 +3,7 @@ package com.squadstack.parkinglot.models.commands.impl;
 import com.squadstack.parkinglot.models.commands.Command;
 import com.squadstack.parkinglot.models.commands.CommandVisitor;
 
-public class CreateParkingLotCommand implements Command {
+public class CreateParkingLotCommand extends Command {
 
     private final int size;
 

@@ -3,7 +3,7 @@ package com.squadstack.parkinglot.models.commands.impl;
 import com.squadstack.parkinglot.models.commands.Command;
 import com.squadstack.parkinglot.models.commands.CommandVisitor;
 
-public class ListCarPlateNumbersAgainstAgeQueryCommand implements Command {
+public class ListCarPlateNumbersAgainstAgeQueryCommand extends Command {
     private final int age;
 
     public ListCarPlateNumbersAgainstAgeQueryCommand(int age) {
