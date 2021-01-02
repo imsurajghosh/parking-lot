@@ -1,6 +1,6 @@
 # parking-lot
 
-Run:  
+Run: requires docker [(download)](https://www.docker.com/products/docker-desktop)  
 docker build -t parkinglot .  
 docker run parkinglot
 
