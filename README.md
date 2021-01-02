@@ -1,7 +1,7 @@
 # parking-lot
 
 Run: requires docker [(download)](https://www.docker.com/products/docker-desktop)  
-docker build -t parkinglot .  
+docker build --no-cache -t parkinglot .  
 docker run parkinglot
 
 Build:
