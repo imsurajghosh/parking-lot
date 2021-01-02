@@ -13,7 +13,7 @@
         <append>false</append>
         <encoder>
             # Pattern of log message for file appender
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</pattern>
+            <pattern>[%p] %d [%t] %F - %m%n</pattern>
         </encoder>
     </appender>
 
