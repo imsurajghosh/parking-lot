@@ -1,11 +1,13 @@
 package com.squadstack.parkinglot.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.io.File;
 import java.util.logging.Level;
 
+@Slf4j
 public class HibernateUtils
 {
     private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -19,7 +21,7 @@ public class HibernateUtils
         }
         catch (Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
-            System.err.println("Initial SessionFactory creation failed." + ex);
+            log.error("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
