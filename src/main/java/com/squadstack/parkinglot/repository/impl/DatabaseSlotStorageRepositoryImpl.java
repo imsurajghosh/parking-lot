@@ -143,7 +143,7 @@ public class DatabaseSlotStorageRepositoryImpl implements SlotStorageRepository 
 
         session.getTransaction().commit();
         return acquiredSlot.orElseThrow(() -> ParkingLotException.from(ErrorCode.ATTEMPT_TO_LEAVE_UNACQUIRED_SLOT, "" +
-                "leaving unacquired slot"));
+                "attempt to leave unacquired slot"));
     }
 
     @Override
