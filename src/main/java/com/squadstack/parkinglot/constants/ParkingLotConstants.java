@@ -1,7 +1,10 @@
 package com.squadstack.parkinglot.constants;
 
 
-public class Constants {
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class ParkingLotConstants {
     public static final String CREATED = "Created parking of %s slots";
     public static final String PARKED =
       "Car with vehicle registration number %s has been parked at slot number %s";

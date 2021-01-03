@@ -12,7 +12,7 @@ import com.squadstack.parkinglot.utils.ValidationUtils;
 
 import java.util.*;
 
-import static com.squadstack.parkinglot.constants.Constants.AGE_LIMIT;
+import static com.squadstack.parkinglot.constants.ParkingLotConstants.AGE_LIMIT;
 
 public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository {
 

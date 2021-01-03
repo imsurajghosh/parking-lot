@@ -1,6 +1,6 @@
 package com.squadstack.parkinglot.services.impl;
 
-import com.squadstack.parkinglot.constants.Constants;
+import com.squadstack.parkinglot.constants.ParkingLotConstants;
 import com.squadstack.parkinglot.models.ParkableEntity;
 import com.squadstack.parkinglot.models.commands.CommandFactory;
 import com.squadstack.parkinglot.models.commands.CommandVisitor;
@@ -8,7 +8,6 @@ import com.squadstack.parkinglot.models.commands.impl.*;
 import com.squadstack.parkinglot.models.slots.AcquiredSlot;
 import com.squadstack.parkinglot.repository.SlotStorageRepository;
 import com.squadstack.parkinglot.repository.impl.DatabaseSlotStorageRepositoryImpl;
-import com.squadstack.parkinglot.repository.impl.InMemorySlotStorageRepositoryImpl;
 import com.squadstack.parkinglot.services.ParkingLotService;
 
 import java.util.List;
@@ -31,13 +30,13 @@ public class ParkingLotServiceImpl implements CommandVisitor<String>, ParkingLot
     @Override
     public String visit(CreateParkingLotCommand command) {
         slotStorageRepository = new DatabaseSlotStorageRepositoryImpl(command.getSize());
-        return String.format(Constants.CREATED, command.getSize());
+        return String.format(ParkingLotConstants.CREATED, command.getSize());
     }
 
     @Override
     public String visit(ParkCommand command) {
         AcquiredSlot acquiredSlot = slotStorageRepository.acquireSlot(command.getParkableEntity());
-        return String.format(Constants.PARKED, acquiredSlot.getParkableEntity().getCarPlateNumber(),
+        return String.format(ParkingLotConstants.PARKED, acquiredSlot.getParkableEntity().getCarPlateNumber(),
                 acquiredSlot.getSlotNumber());
     }
 
@@ -59,7 +58,7 @@ public class ParkingLotServiceImpl implements CommandVisitor<String>, ParkingLot
     @Override
     public String visit(LeaveParkingLotCommand command) {
         AcquiredSlot acquiredSlot = slotStorageRepository.leaveSlot(command.getSlotNumber());
-        return String.format(Constants.LEFT, acquiredSlot.getSlotNumber(),
+        return String.format(ParkingLotConstants.LEFT, acquiredSlot.getSlotNumber(),
                 acquiredSlot.getParkableEntity().getCarPlateNumber(),
                 acquiredSlot.getParkableEntity().getAge());
     }
