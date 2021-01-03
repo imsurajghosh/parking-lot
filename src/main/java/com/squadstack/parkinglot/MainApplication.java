@@ -23,6 +23,7 @@ public class MainApplication {
         System.out.println(e.getMessage());
       }
     }
+    parkingLotService.close();
   }
 
   private static Scanner scannerFromInput(String[] args) {

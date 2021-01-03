@@ -29,4 +29,11 @@ public abstract class Slot {
     public int hashCode() {
         return Objects.hash(slotNumber);
     }
+
+    @Override
+    public String toString() {
+        return "Slot{" +
+                "slotNumber=" + slotNumber +
+                '}';
+    }
 }

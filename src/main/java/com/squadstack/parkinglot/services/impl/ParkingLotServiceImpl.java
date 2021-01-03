@@ -7,6 +7,7 @@ import com.squadstack.parkinglot.models.commands.CommandVisitor;
 import com.squadstack.parkinglot.models.commands.impl.*;
 import com.squadstack.parkinglot.models.slots.AcquiredSlot;
 import com.squadstack.parkinglot.repository.SlotStorageRepository;
+import com.squadstack.parkinglot.repository.impl.DatabaseSlotStorageRepositoryImpl;
 import com.squadstack.parkinglot.repository.impl.InMemorySlotStorageRepositoryImpl;
 import com.squadstack.parkinglot.services.ParkingLotService;
 
@@ -23,8 +24,13 @@ public class ParkingLotServiceImpl implements CommandVisitor<String>, ParkingLot
     }
 
     @Override
+    public void close() {
+        slotStorageRepository.close();
+    }
+
+    @Override
     public String visit(CreateParkingLotCommand command) {
-        slotStorageRepository = new InMemorySlotStorageRepositoryImpl(command.getSize());
+        slotStorageRepository = new DatabaseSlotStorageRepositoryImpl(command.getSize());
         return String.format(Constants.CREATED, command.getSize());
     }
 

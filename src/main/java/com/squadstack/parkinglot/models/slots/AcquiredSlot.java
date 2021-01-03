@@ -1,6 +1,7 @@
 package com.squadstack.parkinglot.models.slots;
 
 import com.squadstack.parkinglot.models.ParkableEntity;
+import lombok.Builder;
 
 import java.util.Objects;
 
@@ -9,6 +10,12 @@ public class AcquiredSlot extends Slot {
 
     public AcquiredSlot(ParkableEntity parkableEntity, AvailableSlot availableSlot) {
         super(availableSlot.getSlotNumber());
+        this.parkableEntity = parkableEntity;
+    }
+
+    @Builder
+    public AcquiredSlot(ParkableEntity parkableEntity, Integer slotNumber) {
+        super(slotNumber);
         this.parkableEntity = parkableEntity;
     }
 
@@ -32,5 +39,12 @@ public class AcquiredSlot extends Slot {
 
     public ParkableEntity getParkableEntity() {
         return parkableEntity;
+    }
+
+    @Override
+    public String toString() {
+        return "AcquiredSlot{" +
+                "parkableEntity=" + parkableEntity +
+                "} " + super.toString();
     }
 }

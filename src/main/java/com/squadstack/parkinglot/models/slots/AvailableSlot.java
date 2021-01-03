@@ -1,9 +1,12 @@
 package com.squadstack.parkinglot.models.slots;
 
+import lombok.Builder;
+
 import java.util.Objects;
 
 public class AvailableSlot extends Slot {
 
+    @Builder
     public AvailableSlot(int slotNumber) {
         super(slotNumber);
     }
@@ -24,5 +27,10 @@ public class AvailableSlot extends Slot {
     @Override
     public int hashCode() {
         return Objects.hash(getSlotNumber());
+    }
+
+    @Override
+    public String toString() {
+        return "AvailableSlot{} " + super.toString();
     }
 }

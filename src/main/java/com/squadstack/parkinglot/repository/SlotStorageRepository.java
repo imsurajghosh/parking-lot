@@ -15,4 +15,6 @@ public interface SlotStorageRepository {
     AcquiredSlot acquireSlot(ParkableEntity parkableEntity);
 
     AcquiredSlot leaveSlot(int slotNumber);
+
+    void close();
 }

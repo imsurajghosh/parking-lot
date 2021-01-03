@@ -1,5 +1,7 @@
 package com.squadstack.parkinglot.models;
 
+import lombok.Builder;
+
 import java.util.Objects;
 
 public class ParkableEntity {
@@ -7,6 +9,7 @@ public class ParkableEntity {
     private final String carPlateNumber;
     private final int age;
 
+    @Builder
     public ParkableEntity(String carPlateNumber, int age) {
         this.carPlateNumber = carPlateNumber;
         this.age = age;
@@ -32,5 +35,13 @@ public class ParkableEntity {
 
     public int getAge() {
         return age;
+    }
+
+    @Override
+    public String toString() {
+        return "ParkableEntity{" +
+                "carPlateNumber='" + carPlateNumber + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

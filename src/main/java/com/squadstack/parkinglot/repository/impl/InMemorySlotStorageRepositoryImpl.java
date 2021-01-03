@@ -105,4 +105,9 @@ public class InMemorySlotStorageRepositoryImpl implements SlotStorageRepository 
 
         return (AcquiredSlot) leftSlot;
     }
+
+    @Override
+    public void close() {
+        // do nothing
+    }
 }
