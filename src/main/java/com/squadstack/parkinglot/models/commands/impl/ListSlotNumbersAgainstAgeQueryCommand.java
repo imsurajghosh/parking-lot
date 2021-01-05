@@ -1,8 +1,12 @@
 package com.squadstack.parkinglot.models.commands.impl;
 
 import com.squadstack.parkinglot.models.commands.Command;
+import com.squadstack.parkinglot.models.commands.CommandPattern;
 import com.squadstack.parkinglot.models.commands.CommandVisitor;
 
+import java.util.List;
+
+@CommandPattern(suffix = "slot_numbers_for_driver_of_age")
 public class ListSlotNumbersAgainstAgeQueryCommand extends Command {
 
     private final int age;
@@ -11,8 +15,8 @@ public class ListSlotNumbersAgainstAgeQueryCommand extends Command {
         this.age = age;
     }
 
-    public static ListSlotNumbersAgainstAgeQueryCommand construct(String[] tokens) {
-        return new ListSlotNumbersAgainstAgeQueryCommand(Integer.valueOf(tokens[1]));
+    public ListSlotNumbersAgainstAgeQueryCommand (List<String> tokens) {
+        this(Integer.valueOf(tokens.get(1)));
     }
 
     @Override

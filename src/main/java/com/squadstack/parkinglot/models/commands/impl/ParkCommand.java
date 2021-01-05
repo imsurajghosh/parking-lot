@@ -2,10 +2,13 @@ package com.squadstack.parkinglot.models.commands.impl;
 
 import com.squadstack.parkinglot.models.ParkableEntity;
 import com.squadstack.parkinglot.models.commands.Command;
+import com.squadstack.parkinglot.models.commands.CommandPattern;
 import com.squadstack.parkinglot.models.commands.CommandVisitor;
 
 import java.util.Arrays;
+import java.util.List;
 
+@CommandPattern(suffix = "park")
 public class ParkCommand extends Command {
 
     private final ParkableEntity parkableEntity;
@@ -14,9 +17,8 @@ public class ParkCommand extends Command {
         this.parkableEntity = new ParkableEntity(carPlateNumber, age);
     }
 
-    public static ParkCommand construct(String[] tokens) {
-        int index = Arrays.asList(tokens).indexOf("driver_age");
-        return new ParkCommand(tokens[1], Integer.valueOf(tokens[index+1]));
+    public ParkCommand (List<String> tokens) {
+        this(tokens.get(1), Integer.valueOf(tokens.get(tokens.indexOf("driver_age") + 1)));
     }
 
     @Override
