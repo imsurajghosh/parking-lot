@@ -16,11 +16,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -44,6 +44,64 @@ public class DatabaseSlotStorageRepositoryImpl implements SlotStorageRepository 
 
     }
 
+
+    @Override
+    public List<Slot> search(Slot slot) {
+        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            StoredSlot storedSlot = session.get(StoredSlot.class, slotNumber);
+            session.getTransaction().commit();
+            return MapperUtils.toSlot(storedSlot);
+        }
+    }
+
+    @Override
+    public Slot get(int slotNumber) {
+        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            StoredSlot storedSlot = session.get(StoredSlot.class, slotNumber);
+            session.getTransaction().commit();
+            return MapperUtils.toSlot(storedSlot);
+        }
+    }
+
+    @Override
+    public Slot remove(int slotNumber) {
+        StoredSlot storedSlot = null;
+
+        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            storedSlot = session.load(StoredSlot.class, slotNumber);
+            session.remove(storedSlot);
+            session.getTransaction().commit();
+        }
+
+        return MapperUtils.toSlot(storedSlot);
+    }
+
+    @Override
+    public Slot update(int slotNumber, UnaryOperator<StoredSlot> updateOperation) {
+        StoredSlot storedSlot = null;
+        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            storedSlot = session.get(StoredSlot.class, slotNumber);
+            updateOperation.apply(storedSlot);
+            session.getTransaction().commit();
+        }
+        return MapperUtils.toSlot(storedSlot);
+    }
+
+    @Override
+    public Slot create(Slot slot) {
+        StoredSlot storedSlot = MapperUtils.toStoredSlot(slot);
+
+        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.save(MapperUtils.toStoredSlot(slot));
+            session.getTransaction().commit();
+        }
+        return MapperUtils.toSlot(storedSlot);
+    }
 
     @Override
     public List<AcquiredSlot> getAcquiredSlot(int age) {
